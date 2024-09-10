@@ -1,0 +1,386 @@
+#######################################################
+# SPECIAL FUNCTIONS
+#######################################################
+
+#extracting archives
+extract() {
+	for archive in "$@"; do
+		if [ -f "$archive" ]; then
+			case $archive in
+			*.tar.bz2) tar xvjf $archive ;;
+			*.tar.gz) tar xvzf $archive ;;
+			*.bz2) bunzip2 $archive ;;
+			*.rar) rar x $archive ;;
+			*.gz) gunzip $archive ;;
+			*.tar) tar xvf $archive ;;
+			*.tbz2) tar xvjf $archive ;;
+			*.tgz) tar xvzf $archive ;;
+			*.zip) unzip $archive ;;
+			*.Z) uncompress $archive ;;
+			*.7z) 7z x $archive ;;
+			*) echo "don't know how to extract '$archive'..." ;;
+			esac
+		else
+			echo "'$archive' is not a valid file!"
+		fi
+	done
+}
+
+# Searches for text in all files in the current folder
+ftext() {
+	# -i case-insensitive
+	# -I ignore binary files
+	# -H causes filename to be printed
+	# -r recursive search
+	# -n causes line number to be printed
+	# optional: -F treat search term as a literal, not a regular expression
+	# optional: -l only print filenames and not the matching lines ex. grep -irl "$1" *
+	grep -iIHrn --color=always "$1" . | less -r
+}
+
+# Searches for text in all files in the current folder
+ftext() {
+	# -i case-insensitive
+	# -I ignore binary files
+	# -H causes filename to be printed
+	# -r recursive search
+	# -n causes line number to be printed
+	# optional: -F treat search term as a literal, not a regular expression
+	# optional: -l only print filenames and not the matching lines ex. grep -irl "$1" *
+	grep -iIHrn --color=always "$1" . | less -r
+}
+
+# Copy file with a progress bar
+cpp() {
+    set -e
+    strace -q -ewrite cp -- "${1}" "${2}" 2>&1 |
+    awk '{
+        count += $NF
+        if (count % 10 == 0) {
+            percent = count / total_size * 100
+            printf "%3d%% [", percent
+            for (i=0;i<=percent;i++)
+                printf "="
+            printf ">"
+            for (i=percent;i<100;i++)
+                printf " "
+            printf "]\r"
+        }
+    }
+    END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
+}
+
+# Copy and go to the directory
+cpg() {
+	if [ -d "$2" ]; then
+		cp "$1" "$2" && cd "$2"
+	else
+		cp "$1" "$2"
+	fi
+}
+
+# Move and go to the directory
+mvg() {
+	if [ -d "$2" ]; then
+		mv "$1" "$2" && cd "$2"
+	else
+		mv "$1" "$2"
+	fi
+}
+
+# Create and go to the directory
+mkdirg() {
+	mkdir -p "$1"
+	cd "$1"
+}
+
+cd ()
+{
+	if [ -n "$1" ]; then
+		builtin cd "$@" && eza -a --icons --group-directories-first
+	else
+		builtin cd ~ && eza -a --icons --group-directories-first
+	fi
+}
+
+# Show the current distribution
+distribution () {
+    local dtype="unknown"  # Default to unknown
+
+    # Use /etc/os-release for modern distro identification
+    if [ -r /etc/os-release ]; then
+        source /etc/os-release
+        case $ID in
+            fedora|rhel|centos)
+                dtype="redhat"
+                ;;
+            sles|opensuse*)
+                dtype="suse"
+                ;;
+            ubuntu|debian)
+                dtype="debian"
+                ;;
+            gentoo)
+                dtype="gentoo"
+                ;;
+            arch|manjaro)
+                dtype="arch"
+                ;;
+            slackware)
+                dtype="slackware"
+                ;;
+            *)
+                # Check ID_LIKE only if dtype is still unknown
+                if [ -n "$ID_LIKE" ]; then
+                    case $ID_LIKE in
+                        *fedora*|*rhel*|*centos*)
+                            dtype="redhat"
+                            ;;
+                        *sles*|*opensuse*)
+                            dtype="suse"
+                            ;;
+                        *ubuntu*|*debian*)
+                            dtype="debian"
+                            ;;
+                        *gentoo*)
+                            dtype="gentoo"
+                            ;;
+                        *arch*)
+                            dtype="arch"
+                            ;;
+                        *slackware*)
+                            dtype="slackware"
+                            ;;
+                    esac
+                fi
+
+                # If ID or ID_LIKE is not recognized, keep dtype as unknown
+                ;;
+        esac
+    fi
+
+    echo $dtype
+}
+
+function whatsmyip () {
+	DISTRIBUTION=$(distribution)
+    # Internal IP Lookup.
+    if command -v ip &> /dev/null; then
+        echo -n "Internal IP: "
+        if [ "$DISTRIBUTION" = "arch" ]; then
+			ip addr show wlp1s0f0u7 | grep "inet " | awk '{print $2}' | cut -d/ -f1
+		else
+			ip addr show wlan0 | grep "inet " | awk '{print $2}' | cut -d/ -f1
+		fi
+    else
+        echo -n "Internal IP: "
+        if [ "$DISTRIBUTION" = "arch" ]; then
+			ifconfig wlp1s0f0u7 | grep "inet " | awk '{print $2}'
+		else
+			ifconfig wlan0 | grep "inet " | awk '{print $2}'
+		fi
+        ifconfig wlan0 | grep "inet " | awk '{print $2}'
+    fi
+
+    # External IP Lookup
+    echo -n "External IP: "
+    curl ident.me; echo
+}
+
+# setting and unsetting the proxy
+function proxy_on() {
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+
+    if (( $# > 0 )); then
+        valid=$(echo $@ | sed -n 's/\([0-9]\{1,3\}.\?\)\{4\}:\([0-9]\+\)/&/p')
+        if [[ $valid != $@ ]]; then
+            >&2 echo "Invalid address"
+            return 1
+        fi
+        local proxy=$1
+        export http_proxy="$proxy" \
+               https_proxy=$proxy \
+               ftp_proxy=$proxy \
+               rsync_proxy=$proxy
+        echo "Proxy environment variable set."
+        return 0
+    fi
+
+    echo -n "username: "; read username
+    if [[ $username != "" ]]; then
+        echo -n "password: "
+        read -es password
+        local pre="$username:$password@"
+    fi
+
+    echo -n "server: "; read server
+    echo -n "port: "; read port
+    local proxy=$pre$server:$port
+    export http_proxy="$proxy" \
+           https_proxy=$proxy \
+           ftp_proxy=$proxy \
+           rsync_proxy=$proxy \
+           HTTP_PROXY=$proxy \
+           HTTPS_PROXY=$proxy \
+           FTP_PROXY=$proxy \
+           RSYNC_PROXY=$proxy
+}
+
+function proxy_off(){
+    unset http_proxy https_proxy ftp_proxy rsync_proxy \
+          HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYNC_PROXY
+    echo -e "Proxy environment variable removed."
+}
+
+#######################################################
+# Aliases
+#######################################################
+
+# Alias's for archives
+alias mktar='tar -cvf'
+alias mkbz2='tar -cvjf'
+alias mkgz='tar -cvzf'
+alias untar='tar -xvf'
+alias unbz2='tar -xvjf'
+alias ungz='tar -xvzf'
+
+# Clear
+alias c='clear'
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	cp="cp -v" \
+	mv="mv -v" \
+	rm="rm -vI" \
+	rsync="rsync -vrPlu" \
+	yt="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ytt="yt --skip-download --write-thumbnail" \
+	ffmpeg="ffmpeg -hide_banner"
+
+# Colorize commands when possible.
+alias \
+	grep="grep --color=auto" \
+	egrep="egrep --color=auto" \
+	fgrep="fgrep --color=auto" \
+	ripgrep="ripgrep --color=auto"
+	diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi" \
+	ip="ip -color=auto" 
+
+
+# list
+alias \
+	ls="eza -a --icons --group-directories-first" \
+	lt="eza -a --tree --level=1 --icons --group-directories-first" \
+	ll="eza -al --icons --group-directories-first"
+	#alias ls='ls --color=auto' \
+	#alias la='ls -A' \
+	#alias ll='ls -alFh --group-directories-first' \
+	#alias l='ls -CF' \
+	#alias l.="ls -A | egrep '^\.'" \
+	#ldot="ls -ld .*"
+
+
+
+
+
+# bat
+DISTRIBUTION=$(distribution)
+if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ] || [ "$DISTRIBUTION" = "artix" ]; then
+      alias cat='bat'
+else
+      alias cat='batcat'
+fi 
+
+
+# Readable output
+alias df='df -h'
+
+# free
+alias free="free -mt"
+
+
+# ps
+alias \
+	ps="ps auxf" \
+	psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+# grub update
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo grub-mkconfig -o /boot/efi/EFI/artix/grub.cfg"
+
+
+# Continue Download
+alias wget="wget -c"
+
+# Add New Fonts
+alias fc="sudo fc-cache -fv"
+
+# Get Fastest Mirrors for Pacman 
+alias mirror="sudo reflector --protocol https --latest 50 --number 20 --sort rate --save /etc/pacman.d/mirrorlist-arch"
+alias mirrors=mirror
+
+# Cleanup orphened packages
+alias cleanup="sudo pacman -Rns $(pacman -Qtdq)"
+
+## File and Folder Managment
+
+# trash-cli
+alias rm="trash -v"
+
+alias \
+	rmd="rm -r" \
+	mkd="mkdir -pv" \
+	smkd="sudo mkdir -pv" \
+	srm="sudo rm" \
+	srmd="sudo rm -r" \
+	cpd="cp -R" \
+	scp="sudo cp" \
+	scpd="sudo cp -R"
+
+# linking
+alias \
+	slin="sudo ln -s" \
+	lin="ln -s" 
+
+
+# userlist
+alias userlist="cut -d: -f1 /etc/passwd"
+    
+# SSH
+alias \
+	vps="ssh root@46.8.237.152 -p 422" \
+	vpstor="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
+	vpswarp="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
+	vpspro="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
+
+# Sftp
+alias \
+	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' -P 422 root@46.8.237.152" \
+	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' -P 422 root@46.8.237.152" \
+	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' -P 422 root@46.8.237.152"
+
+#  some network actions
+alias myip="curl ident.me; echo"
+
+# Fragments
+alias \
+	 pyprox="/home/rashad/.local/venv/bin/python /home/rashad/.local/scripts/pyprox_HTTPS_v3.0.py" \
+	 pyprox-tcp="/home/rashad/.local/venv/bin/python /home/rashad/.local/scripts/pyprox_tcp.py" \
+	 cfscan="/home/rashad/.local/venv/bin/python /home/rashad/build/cf-ip-scanner-py/start.py"
+
+# tldr
+# alias tldr="tldr --print-completion"
+
+# SystemD
+alias \
+	 sctl="systemctl" \
+	 jxe="journalctl -xe"
+
+# Restart DNS services
+alias redns="sudo systemctl restart cloudflared && sudo systemctl restart unbound && sudo systemctl restart dnsmasq"
+
+# run hiddify with privilaged access
+alias hiddify-su="sudo -E /usr/bin/hiddify"
+
+

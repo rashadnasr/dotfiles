@@ -1,0 +1,31 @@
+### WM INDEPENDENT KEYBINDINGS ###
+
+## make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+## Volume Control
+
+# Increase the volume
+super + ]
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+
+# Decrease the volume
+super + [
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-
+# Toggle Mute	
+super + m
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+# Toggle MIC Mute
+super + n
+	wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+	
+## Applications
+# Brave
+super + b
+    brave https://search.brave.com/
+# File Manager
+super + e
+    pcmanfm-qt
+# Lock Screen
+super + z
+	slock
