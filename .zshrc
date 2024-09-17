@@ -30,7 +30,7 @@ zinit light Aloxaf/fzf-tab
 #######################################################
 
 # Setting the environment variables
-[ -f "$HOME/.env" ] && export $(envsubst < .env)
+[ -f "$HOME/.env" ] && export $(envsubst < .env) > /dev/null
 
 
 # Run fastfetch if exists on the system
