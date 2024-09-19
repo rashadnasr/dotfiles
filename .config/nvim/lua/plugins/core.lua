@@ -1,6 +1,12 @@
 return {
   -- colorschemes
   {
+    { "rmehri01/onenord.nvim" },
+  },
+  {
+    { "AlexvZyl/nordic.nvim" },
+  },
+  {
     { "olimorris/onedarkpro.nvim" },
   },
   {
