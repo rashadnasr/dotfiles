@@ -349,16 +349,16 @@ alias userlist="cut -d: -f1 /etc/passwd"
     
 # SSH
 alias \
-	vps="ssh root@46.8.237.152 -p 422" \
-	vpstor="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
-	vpswarp="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
-	vpspro="ssh root@46.8.237.152 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
+	vps="ssh root@31.15.18.59 -p 422" \
+	vpstor="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
+	vpswarp="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
+	vpspro="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
 
 # Sftp
 alias \
-	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' -P 422 root@46.8.237.152" \
-	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' -P 422 root@46.8.237.152" \
-	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' -P 422 root@46.8.237.152"
+	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' -P 422 root@31.15.18.59" \
+	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' -P 422 root@31.15.18.59" \
+	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' -P 422 root@31.15.18.59"
 
 #  some network actions
 alias myip="curl ident.me; echo"
@@ -366,8 +366,8 @@ alias myip="curl ident.me; echo"
 # Fragments
 alias \
 	 pyprox="/home/rashad/.local/venv/bin/python /home/rashad/.local/scripts/pyprox_HTTPS_v3.0.py" \
-	 pyprox-tcp="/home/rashad/.local/venv/bin/python /home/rashad/.local/scripts/pyprox_tcp.py" \
-	 cfscan="/home/rashad/.local/venv/bin/python /home/rashad/build/cf-ip-scanner-py/start.py"
+	 pyprox-tcp="/home/rashad/.local/venv/bin/python /home/rashad/.local/scripts/pyprox_tcp.py"
+	 
 
 # tldr
 # alias tldr="tldr --print-completion"
@@ -383,4 +383,5 @@ alias redns="sudo systemctl restart cloudflared && sudo systemctl restart unboun
 # run hiddify with privilaged access
 alias hiddify-su="sudo -E /usr/bin/hiddify"
 
-
+# Cloudflare Clean IP scan
+alias cfscan="~/build/CFScanner/bash/cfScanner.sh -v NO -m SUBNET -t BOTH -p 16 -n 5 -d 4 -u 3 -s 100 -r 50"
