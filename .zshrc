@@ -90,6 +90,8 @@ setopt local_traps
 
 setopt complete_aliases
 
+# Use NeoVim for openning MAN pages
+[ -f /usr/bin/nvim ] && export MANPAGER='nvim +Man!'
 #######################################################
 # History and Completion
 #######################################################
