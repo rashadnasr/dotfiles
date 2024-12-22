@@ -334,8 +334,6 @@ alias \
 	smkd="sudo mkdir -pv" \
 	srm="sudo rm" \
 	srmd="sudo rm -r" \
-	cpd="cp -R" \
-	scp="sudo cp" \
 	scpd="sudo cp -R"
 
 # linking
@@ -349,16 +347,16 @@ alias userlist="cut -d: -f1 /etc/passwd"
     
 # SSH
 alias \
-	vps="ssh root@31.15.18.59 -p 422" \
-	vpstor="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
-	vpswarp="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
-	vpspro="ssh root@31.15.18.59 -p 422 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
+	vps="ssh root@193.187.173.135" \
+	vpstor="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
+	vpswarp="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
+	vpspro="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
 
 # Sftp
 alias \
-	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' -P 422 root@31.15.18.59" \
-	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' -P 422 root@31.15.18.59" \
-	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' -P 422 root@31.15.18.59"
+	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' root@193.187.173.135" \
+	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' root@193.187.173.135" \
+	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' root@193.187.173.135"
 
 #  some network actions
 alias myip="curl ident.me; echo"
