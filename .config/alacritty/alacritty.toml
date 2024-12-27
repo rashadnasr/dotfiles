@@ -1,9 +1,9 @@
-import = [
-    "~/.config/alacritty/themes/themes/hyper.toml",
+general.import = [
+    "~/.config/alacritty/themes/hyper.toml",
     "~/.config/alacritty/keybinds.toml"
 ]
 
-live_config_reload = true
+general.live_config_reload = true
 
 [bell]
 animation = "EaseOutExpo"
@@ -56,7 +56,7 @@ mouse = "Right"
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 
 
