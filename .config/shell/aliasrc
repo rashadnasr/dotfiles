@@ -307,7 +307,7 @@ alias \
 	psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
 
 # grub update
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo grub-mkconfig -o /boot/efi/EFI/artix/grub.cfg"
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg"
 
 
 # Continue Download
@@ -383,3 +383,6 @@ alias hiddify-su="sudo -E /usr/bin/hiddify"
 
 # Cloudflare Clean IP scan
 alias cfscan="~/build/CFScanner/bash/cfScanner.sh -v NO -m SUBNET -t BOTH -p 16 -n 5 -d 4 -u 3 -s 100 -r 50"
+
+# ncmcpp
+alias music="ncmpcpp"

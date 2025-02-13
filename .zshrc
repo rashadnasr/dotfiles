@@ -30,11 +30,11 @@ zinit light Aloxaf/fzf-tab
 #######################################################
 
 # Setting the environment variables
-[ -f "$HOME/.env" ] && export $(envsubst < .env) > /dev/null
+[ -f "$HOME/.env" ] && export $(envsubst < "$HOME/.env") > /dev/null
 
 
 # Run fastfetch if exists on the system
-[ -f /usr/bin/fastfetch ] && fastfetch
+#[ -f /usr/bin/fastfetch ] && fastfetch
 
 
 # FZF Shell integrations
@@ -137,10 +137,13 @@ bindkey '^[w' kill-region
 
 
 # Use neovim for vim if present.
-[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+# [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/rashad/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/rashad/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/rashad/.lmstudio/bin"

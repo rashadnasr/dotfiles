@@ -69,8 +69,8 @@ dynamic_title = true
 startup_mode = "Maximized"
 
 [window.dimensions]
-columns = 160
-lines = 80
+columns = 150
+lines = 70
 
 [window.padding]
 x = 10
