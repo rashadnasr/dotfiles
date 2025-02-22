@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+[[ -z "$PS1" ]] && return
 # Checking for interactive shell and create a status variable
 iatest=$(expr index "$-" i)
 

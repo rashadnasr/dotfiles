@@ -59,8 +59,6 @@ else
 	PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 fi
 
-# PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-# eval "$(oh-my-posh init zsh --config /usr/share/oh-my-posh/themes/atomic.omp.json)"
 
 #PATH
 PATH=/usr/local/bin:$PATH
@@ -92,6 +90,8 @@ setopt complete_aliases
 
 # Use NeoVim for openning MAN pages
 [ -f /usr/bin/nvim ] && export MANPAGER="nvim +Man!"
+
+
 #######################################################
 # History and Completion
 #######################################################
@@ -134,10 +134,6 @@ bindkey '^[w' kill-region
 # 	knownhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} ) 
 # 	zstyle    ':completion:*:(ssh|scp|sftp):*' hosts $knownhosts
 # fi
-
-
-# Use neovim for vim if present.
-# [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
