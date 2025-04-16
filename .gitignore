@@ -1,2 +1,4 @@
 .config/geany/session.conf
+.config/geany/geany_socket*
 .config/nvim/lazy-lock.json
+.config/tmux/plugins/
