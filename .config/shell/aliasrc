@@ -336,10 +336,9 @@ alias userlist="cut -d: -f1 /etc/passwd"
     
 # SSH
 alias \
-	vps="ssh root@193.187.173.135" \
-	vpstor="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
-	vpswarp="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
-	vpspro="ssh root@193.187.173.135 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
+	vpstor="ssh root@31.59.40.147 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
+	vpswarp="ssh root@103.136.69.159 -p 1199 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
+	vpspro="ssh root@103.136.69.159 -p 1199 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
 
 # Sftp
 alias \

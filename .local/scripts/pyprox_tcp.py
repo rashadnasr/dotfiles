@@ -19,19 +19,19 @@ if os.name == 'posix':
 
 
 
-listen_PORT = 2500    # pyprox listening to 127.0.0.1:listen_PORT
+listen_PORT = 4500    # pyprox listening to 127.0.0.1:listen_PORT
 
-Cloudflare_IP = '162.159.135.42'   # plos.org (can be any dirty cloudflare ip)
+Cloudflare_IP = '172.64.159.90'   # plos.org (can be any dirty cloudflare ip)
 Cloudflare_port = 443
 
-L_fragment = 77   # length of fragments of Client Hello packet (L_fragment Byte in each chunk)
-fragment_sleep = 0.2  # sleep between each fragment to make GFW-cache full so it forget previous chunks. LOL.
+L_fragment = 10   # length of fragments of Client Hello packet (L_fragment Byte in each chunk)
+fragment_sleep = 0.01 # sleep between each fragment to make GFW-cache full so it forget previous chunks. LOL.
 
 
 
 # ignore description below , its for old code , just leave it intact.
 my_socket_timeout = 60 # default for google is ~21 sec , recommend 60 sec unless you have low ram and need close soon
-first_time_sleep = 0.01 # speed control , avoid server crash if huge number of users flooding (default 0.1)
+first_time_sleep = 0.1 # speed control , avoid server crash if huge number of users flooding (default 0.1)
 accept_time_sleep = 0.01 # avoid server crash on flooding request -> max 100 sockets per second
 
 

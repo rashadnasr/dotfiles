@@ -20,15 +20,15 @@ if os.name == 'posix':
 
 
 
-listen_PORT = 2500    # pyprox listening to 127.0.0.1:listen_PORT
+listen_PORT = 4500    # pyprox listening to 127.0.0.1:listen_PORT
 
-Cloudflare_IP = '162.159.135.42'   # plos.org (can be any dirty cloudflare ip)
+Cloudflare_IP = '172.64.159.90'   # plos.org (can be any dirty cloudflare ip)
 # Cloudflare_IP = '162.159.36.93'  # 
 
 Cloudflare_port = 443
 
-num_fragment = 87  # total number of chunks that ClientHello devided into (chunks with random size)
-fragment_sleep = 0.008  # sleep between each fragment to make GFW-cache full so it forget previous chunks. LOL.
+num_fragment = 20  # total number of chunks that ClientHello devided into (chunks with random size)
+fragment_sleep = 0.002  # sleep between each fragment to make GFW-cache full so it forget previous chunks. LOL.
 
 
 

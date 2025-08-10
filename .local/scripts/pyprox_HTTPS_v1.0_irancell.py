@@ -14,7 +14,7 @@ import random
 
 listen_PORT = 4500    # pyprox listening to 127.0.0.1:listen_PORT
 
-num_fragment = 14  # total number of chunks that ClientHello devided into (chunks with random size)
+num_fragment = 20  # total number of chunks that ClientHello devided into (chunks with random size)
 fragment_sleep = 0.01  # sleep between each fragment to make GFW-cache full so it forget previous chunks. LOL.
 
 log_every_N_sec = 10   # every 30 second , update log file with latest DNS-cache statistics
@@ -24,10 +24,10 @@ log_every_N_sec = 10   # every 30 second , update log file with latest DNS-cache
 # DNS_url = 'https://doh.opendns.com/dns-query?dns='           # not working in iran , ip blocked
 # DNS_url = 'https://secure.avastdns.com/dns-query?dns='      # not working in iran , ip blocked
 # DNS_url = 'https://doh.libredns.gr/dns-query?dns='          # not working in iran , ip blocked
-#DNS_url = 'https://dns.electrotm.org/dns-query?dns='
+DNS_url = 'https://dns.electrotm.org/dns-query?dns='
 # DNS_url = 'https://dns.bitdefender.net/dns-query?dns='
 # DNS_url = 'https://cluster-1.gac.edu/dns-query?dns='
-DNS_url = 'https://sdrtc.fam-shop.ir/dns-query?dns='
+#DNS_url = 'https://sdrtc.fam-shop.ir/dns-query?dns='
 
 
 
@@ -41,6 +41,7 @@ offline_DNS = {
 
 'api.twitter.com': '104.244.42.66',
 'twitter.com': '104.244.42.1',
+'x.com': '104.244.42.1',
 'pbs.twimg.com': '93.184.220.70',
 'abs-0.twimg.com': '104.244.43.131',
 'abs.twimg.com': '152.199.24.185', 
@@ -139,7 +140,8 @@ offline_DNS = {
 
 
 ################## DNS over HTTPS IP Address (leave it intact , it must Exist) ######################
-'cloudflare-dns.com':'1.1.1.1',    # not working in iran , ip blocked
+#'cloudflare-dns.com':'1.1.1.1',    # not working in iran , ip blocked
+'cloudflare-dns.com':'172.64.123.186',
 'dns.google':'8.8.8.8',    # not working in iran , ip blocked
 'doh.opendns.com':'208.67.222.222',    # not working in iran , ip blocked
 'secure.avastdns.com':'185.185.133.66',  # not working in iran , ip blocked

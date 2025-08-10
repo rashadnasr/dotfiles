@@ -23,7 +23,7 @@ allow_insecure = True   # set true to allow certificate domain mismatch in DoH
 
 
 
-DNS_url = 'https://cloudflare-dns.com/dns-query?dns='
+#DNS_url = 'https://cloudflare-dns.com/dns-query?dns='
 # DNS_url = 'https://8.8.4.4/dns-query?dns='      # blocked?
 # DNS_url = 'https://8.8.8.8/dns-query?dns='      # blocked?
 # DNS_url = 'https://1.1.1.1/dns-query?dns='      # blocked?
@@ -31,7 +31,7 @@ DNS_url = 'https://cloudflare-dns.com/dns-query?dns='
 # DNS_url = 'https://doh.opendns.com/dns-query?dns='           # blocked?
 # DNS_url = 'https://secure.avastdns.com/dns-query?dns='      # blocked?
 # DNS_url = 'https://doh.libredns.gr/dns-query?dns='          # blocked?
-# DNS_url = 'https://dns.electrotm.org/dns-query?dns='        # DNS server inside iran
+DNS_url = 'https://dns.electrotm.org/dns-query?dns='        # DNS server inside iran
 # DNS_url = 'https://dns.bitdefender.net/dns-query?dns='
 # DNS_url = 'https://cluster-1.gac.edu/dns-query?dns='
 
@@ -44,14 +44,15 @@ offline_DNS = {
 # 'cloudflare-dns.com':'1.1.1.1',  # IP filtered
 # 'cloudflare-dns.com':'172.67.128.43',   # any cludflare ip can be used for cloudflare DoH 
 # 'cloudflare-dns.com':'64.68.192.137',   
-'cloudflare-dns.com':'203.32.120.226',
+'cloudflare-dns.com':'172.64.159.90',
 
 
 'dns.google':'8.8.8.8',    # IP filtered
 'doh.opendns.com':'208.67.222.222',    
 'secure.avastdns.com':'185.185.133.66',  
 'doh.libredns.gr':'116.202.176.26',           
-'dns.electrotm.org':'78.157.42.100',
+#'dns.electrotm.org':'78.157.42.100',
+'dns.electrotm.org':'142.54.189.109',
 'dns.bitdefender.net':'34.84.232.67',
 'cluster-1.gac.edu':'138.236.128.101',
 ##########################################################################
@@ -64,6 +65,7 @@ offline_DNS = {
 
 'api.twitter.com': '104.244.42.66',
 'twitter.com': '104.244.42.1',
+'x.com': '104.244.42.1',
 'pbs.twimg.com': '93.184.220.70',
 'abs-0.twimg.com': '104.244.43.131',
 'abs.twimg.com': '152.199.24.185', 

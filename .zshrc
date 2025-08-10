@@ -141,6 +141,10 @@ bindkey '^[w' kill-region
 [[ -f /home/rashad/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/rashad/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+## Starting the SSH Agent and load keys if necessary
+[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"
+
+
