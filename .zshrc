@@ -33,20 +33,19 @@ zinit light Aloxaf/fzf-tab
 # Setting the environment variables
 [ -f "$HOME/.env" ] && export $(envsubst < "$HOME/.env") > /dev/null
 
+# You may want to put all your additions into a separate file like
+# ~/.config/shell/aliasrc, instead of adding them here directly..
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 
-# Run fastfetch if exists on the system
-#[ -f /usr/bin/fastfetch ] && fastfetch
 
+# Source AutoJump script if exists
+[ -f "/usr/share/autojump/autojump.zsh" ] && source "/usr/share/autojump/autojump.zsh"
 
 # FZF Shell integrations
 eval "$(fzf --zsh)"
 
-# Autojump
-[ -f "/usr/share/autojump/autojump.zsh" ] && source "/usr/share/autojump/autojump.zsh"
-
-# You may want to put all your additions into a separate file like
-# ~/.config/shell/aliasrc, instead of adding them here directly..
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
+# Run fastfetch if exists on the system
+#[ -f /usr/bin/fastfetch ] && fastfetch
 
 
 #######################################################
@@ -142,7 +141,30 @@ bindkey '^[w' kill-region
 ## [/Completion]
 
 ## Starting the SSH Agent and load keys if necessary
-[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+# SSH agent
+ssh_pid_file="$HOME/.config/ssh-agent.pid"
+SSH_AUTH_SOCK="$HOME/.config/ssh-agent.sock"
+
+# If SSH_AGENT_PID is not set, try to read it from the pidfile
+if [ -z "$SSH_AGENT_PID" ]; then
+    SSH_AGENT_PID=$(cat "$ssh_pid_file" 2>/dev/null || echo "")
+fi
+
+# Check if the agent is still running
+if ! kill -0 $SSH_AGENT_PID &>/dev/null; then
+    # Agent not running, start a new one
+    rm -f "$SSH_AUTH_SOCK" &>/dev/null
+    >&2 echo "Starting SSH agent, since it's not running; this can take a moment"
+    eval "$(ssh-agent -s -a "$SSH_AUTH_SOCK")"
+    echo "$SSH_AGENT_PID" > "$ssh_pid_file"
+    ssh-add -A 2>/dev/null
+    >&2 echo "Started ssh-agent with '$SSH_AUTH_SOCK'"
+fi
+
+# Export the environment variables
+export SSH_AGENT_PID
+export SSH_AUTH_SOCK   
+#[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"

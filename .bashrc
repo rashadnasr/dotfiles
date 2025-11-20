@@ -13,21 +13,21 @@ if [ -f "$HOME/.env" ]; then
 	export $(envsubst < .env)
 fi
 
-# Source custom aliases
-if [ -f ~/.config/shell/aliasrc ]; then
-	. ~/.config/shell/aliasrc
-fi
-# Source AutoJump script if exists
-if [ -f /usr/share/autojump/autojump.bash ]; then
-	. /usr/share/autojump/autojump.bash
-fi
-
 # You may want to put all your additional aliases into a separate file like
 # ~/.config/shell/aliasrc, instead of adding them here directly.
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ]; then
     . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 fi
 
+# Source AutoJump script if exists
+if [ -f /usr/share/autojump/autojump.bash ]; then
+	. /usr/share/autojump/autojump.bash
+fi
+
+
+
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
 # Source Fuzzy Finder scripts if they exists (fzf)
 if [ -f /usr/share/fzf/completion.bash ]; then
     . /usr/share/fzf/completion.bash
@@ -35,16 +35,18 @@ fi
 if [ -f /usr/share/fzf/key-bindings.bash ]; then
     . /usr/share/fzf/key-bindings.bash
 fi
-if [ -f /usr/share/fzf/fzf-bash-completion.sh ]; then
-    . /usr/share/fzf/fzf-bash-completion.sh
-fi
+#if [ -f /usr/share/fzf/fzf-bash-completion.sh ]; then
+    #. /usr/share/fzf/fzf-bash-completion.sh
+#fi
 #bind -x '"\t": fzf_bash_completion'
-#eval "$(fzf --bash)"
+
+# Setting the PATH
+export PATH="$PATH:$HOME/.local/bin"
 
 # Run fastfetch if exists on the system
-if [ -f /usr/bin/fastfetch ]; then
-	fastfetch
-fi
+#if [ -f /usr/bin/fastfetch ]; then
+	#fastfetch
+#fi
 
 #######################################################
 # General
@@ -114,9 +116,11 @@ export HISTCONTROL=erasedups:ignoredups:ignorespace
 shopt -s checkwinsize
 
 #######################################################
-# 
+# Applications
 #######################################################
 
+## Starting the SSH Agent and load keys if necessary
+[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)" >> /dev/null
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"
