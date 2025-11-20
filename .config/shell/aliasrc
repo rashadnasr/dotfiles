@@ -151,6 +151,7 @@ distribution () {
     echo $dtype
 }
 
+# Showing Ip address of the machine
 function whatsmyip () {
 	DISTRIBUTION=$(distribution)
     # Internal IP Lookup.
