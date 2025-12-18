@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 [[ -z "$PS1" ]] && return
-# Checking for interactive shell and create a status variable
+# Check for interactive shell and create a status variable
 iatest=$(expr index "$-" i)
 
+# ble.sh script for syntax highlighting
+[[ $- == *i* ]] &&
+  source "$HOME/.local/share/blesh/ble.sh" --attach=none
 
 #######################################################
 # Source Aliases and Scripts
@@ -10,7 +13,7 @@ iatest=$(expr index "$-" i)
 
 # Setting the environment variables
 if [ -f "$HOME/.env" ]; then
-	export $(envsubst < .env)
+	export $(envsubst < "$HOME"/.env)
 fi
 
 # You may want to put all your additional aliases into a separate file like
@@ -28,13 +31,14 @@ fi
 
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
-# Source Fuzzy Finder scripts if they exists (fzf)
-if [ -f /usr/share/fzf/completion.bash ]; then
-    . /usr/share/fzf/completion.bash
-fi
+# Source Fuzzy Finder scripts if they exists (fzf
 if [ -f /usr/share/fzf/key-bindings.bash ]; then
     . /usr/share/fzf/key-bindings.bash
 fi
+if [ -f /usr/share/fzf/completion.bash ]; then
+    . /usr/share/fzf/completion.bash
+fi
+
 #if [ -f /usr/share/fzf/fzf-bash-completion.sh ]; then
     #. /usr/share/fzf/fzf-bash-completion.sh
 #fi
@@ -46,6 +50,14 @@ export PATH="$PATH:$HOME/.local/bin"
 # SSH agent
 ssh_pid_file="$HOME/.config/ssh-agent.pid"
 SSH_AUTH_SOCK="$HOME/.config/ssh-agent.sock"
+
+if [[ ! -f "$HOME/.config/ssh-agent.pid" ]]; then
+    touch "$HOME/.config/ssh-agent.pid"
+fi
+if [[ ! -f "$HOME/.config/ssh-agent.sock" ]]; then
+    touch "$HOME/.config/ssh-agent.sock"
+fi
+
 if [ -z "$SSH_AGENT_PID" ]
 then
 	# no PID exported, try to get it from pidfile
@@ -101,7 +113,7 @@ ENDC="\\[\\e[0m\\]"
 
 # Setting the Prompt
 if [ -f "/usr/bin/oh-my-posh" ]; then
-	eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/atomic.omp.json)"
+	eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/json.omp.json)"
 else
 	PS1="${MAGENTA}\t ${GREEN}\u ${WHITE}at ${YELLOW}\h${RED}${ssh_message} ${WHITE}in ${BLUE}\w \n${CYAN}\$${ENDC} "
 fi
@@ -144,8 +156,8 @@ shopt -s checkwinsize
 # Applications
 #######################################################
 
-## Starting the SSH Agent and load keys if necessary
-[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)" >> /dev/null
-
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"
+
+# Add the following line at the end of bashrc
+[[ ${BLE_VERSION-} ]] && ble-attach
