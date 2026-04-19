@@ -296,9 +296,6 @@ alias free="free -mt"
 	#ps="ps auxf" \
 	#psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
 
-# grub update
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo grub-mkconfig -o /boot/efi/EFI/grub.cfg"
-
 
 # Continue Download
 alias wget="wget -c"
@@ -307,11 +304,9 @@ alias wget="wget -c"
 alias fc="sudo fc-cache -fv"
 
 # Get Fastest Mirrors for Pacman 
-alias mirror="sudo rate-mirrors --disable-comments-in-file --allow-root --save /etc/pacman.d/mirrorlist arch"
-alias ch-mirrors="sudo rate-mirrors --disable-comments-in-file --allow-root --save /etc/pacman.d/chaotic-mirrorlist chaotic-aur"
+#alias mirror="sudo rate-mirrors --disable-comments-in-file --allow-root --save /etc/pacman.d/mirrorlist arch"
+#alias ch-mirrors="sudo rate-mirrors --disable-comments-in-file --allow-root --save /etc/pacman.d/chaotic-mirrorlist chaotic-aur"
 
-# Cleanup orphened packages
-alias cleanup="sudo pacman -Rns $(pacman -Qtdq)"
 
 ## File and Folder Managment
 

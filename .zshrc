@@ -140,33 +140,42 @@ bindkey '^[w' kill-region
 [[ -f /home/rashad/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/rashad/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+#######################################################
+# Applications
+#######################################################
+
 ## Starting the SSH Agent and load keys if necessary
-# SSH agent
 ssh_pid_file="$HOME/.config/ssh-agent.pid"
 SSH_AUTH_SOCK="$HOME/.config/ssh-agent.sock"
 
-# If SSH_AGENT_PID is not set, try to read it from the pidfile
-if [ -z "$SSH_AGENT_PID" ]; then
-    SSH_AGENT_PID=$(cat "$ssh_pid_file" 2>/dev/null || echo "")
+if [[ ! -f "$HOME/.config/ssh-agent.pid" ]]; then
+    touch "$HOME/.config/ssh-agent.pid"
+fi
+if [[ ! -f "$HOME/.config/ssh-agent.sock" ]]; then
+    touch "$HOME/.config/ssh-agent.sock"
 fi
 
-# Check if the agent is still running
-if ! kill -0 $SSH_AGENT_PID &>/dev/null; then
-    # Agent not running, start a new one
-    rm -f "$SSH_AUTH_SOCK" &>/dev/null
-    >&2 echo "Starting SSH agent, since it's not running; this can take a moment"
-    eval "$(ssh-agent -s -a "$SSH_AUTH_SOCK")"
-    echo "$SSH_AGENT_PID" > "$ssh_pid_file"
-    ssh-add -A 2>/dev/null
-    >&2 echo "Started ssh-agent with '$SSH_AUTH_SOCK'"
+if [ -z "$SSH_AGENT_PID" ]
+then
+	# no PID exported, try to get it from pidfile
+	SSH_AGENT_PID=$(cat "$ssh_pid_file")
 fi
 
-# Export the environment variables
+if ! kill -0 $SSH_AGENT_PID &> /dev/null
+then
+	# the agent is not running, start it
+	rm "$SSH_AUTH_SOCK" &> /dev/null
+	>&2 echo "Starting SSH agent, since it's not running; this can take a moment"
+	eval "$(ssh-agent -s -a "$SSH_AUTH_SOCK")"
+	echo "$SSH_AGENT_PID" > "$ssh_pid_file"
+	ssh-add "$HOME/.ssh/github" 2>/dev/null
+
+	>&2 echo "Started ssh-agent with '$SSH_AUTH_SOCK'"
+else
+ 	>&2 echo "ssh-agent on '$SSH_AUTH_SOCK' ($SSH_AGENT_PID)"
+fi
+
 export SSH_AGENT_PID
-export SSH_AUTH_SOCK   
-#[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/rashad/.lmstudio/bin"
+export SSH_AUTH_SOCK
 
 

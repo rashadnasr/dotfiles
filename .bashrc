@@ -3,10 +3,6 @@
 # Check for interactive shell and create a status variable
 iatest=$(expr index "$-" i)
 
-# ble.sh script for syntax highlighting
-[[ $- == *i* ]] &&
-  source "$HOME/.local/share/blesh/ble.sh" --attach=none
-
 #######################################################
 # Source Aliases and Scripts
 #######################################################
@@ -74,8 +70,8 @@ then
 	ssh-add "$HOME/.ssh/github" 2>/dev/null
 
 	>&2 echo "Started ssh-agent with '$SSH_AUTH_SOCK'"
-# else
-# 	>&2 echo "ssh-agent on '$SSH_AUTH_SOCK' ($SSH_AGENT_PID)"
+else
+ 	>&2 echo "ssh-agent on '$SSH_AUTH_SOCK' ($SSH_AGENT_PID)"
 fi
 export SSH_AGENT_PID
 export SSH_AUTH_SOCK
@@ -128,6 +124,12 @@ shopt -s globstar
 
 export HISTFILE=~/.cache/bash/history
 
+if [[ ! -f "$HOME/.cache/bash/history" ]]; then
+    mkdir -p "$HOME/.cache/bash"
+    touch "$HOME/.cache/bash/history"
+fi
+
+
 # Show auto-completion list automatically, without double tab
 if [[ $iatest -gt 0 ]]; then
 	bind "set show-all-if-ambiguous On";
@@ -159,5 +161,3 @@ shopt -s checkwinsize
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"
 
-# Add the following line at the end of bashrc
-[[ ${BLE_VERSION-} ]] && ble-attach
