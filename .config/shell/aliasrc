@@ -332,15 +332,15 @@ alias userlist="cut -d: -f1 /etc/passwd"
     
 # SSH
 alias \
-	vpstor="ssh root@31.59.40.147 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
-	vpswarp="ssh root@103.136.69.159 -p 1199 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
-	vpspro="ssh root@103.136.69.159 -p 1199 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
+	vpstor="ssh root@95.182.86.192 -p 22 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p'" \
+	vpswarp="ssh root@95.182.86.192 -p 22 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p'" \
+	vpspro="ssh root@95.182.86.192 -p 22 -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p'"
 
 # Sftp
 alias \
-	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' root@193.187.173.135" \
-	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' root@193.187.173.135" \
-	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' root@193.187.173.135"
+	 sftptor="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:9150 %h %p' root@95.182.86.192" \
+	 sftpwarp="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:8086 %h %p' root@95.182.86.192" \
+	 sftppro="sftp -o 'ProxyCommand=nc -X 5 -x 127.0.0.1:10808 %h %p' root@95.182.86.192"
 
 #  some network actions
 alias myip="curl ident.me; echo"

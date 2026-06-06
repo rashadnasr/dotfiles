@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/home/rashad/.zsh/completions:"* ]]; then export FPATH="/home/rashad/.zsh/completions:$FPATH"; fi
 #######################################################
 # Zinit
 #######################################################
@@ -177,5 +179,4 @@ fi
 
 export SSH_AGENT_PID
 export SSH_AUTH_SOCK
-
 

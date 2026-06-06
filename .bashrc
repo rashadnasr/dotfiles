@@ -160,4 +160,3 @@ shopt -s checkwinsize
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/rashad/.lmstudio/bin"
-
