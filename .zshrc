@@ -67,6 +67,8 @@ PATH=/usr/local/bin:$PATH
 [[ -d ~/.local/bin ]] && PATH=~/.local/bin:$PATH
 [[ -d ~/.bin ]] && PATH=~/.bin:$PATH
 
+XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
+
 # Load completions
 autoload -Uz compinit && compinit
 
@@ -146,37 +148,34 @@ bindkey '^[w' kill-region
 # Applications
 #######################################################
 
-## Starting the SSH Agent and load keys if necessary
-# ssh_pid_file="$HOME/.config/ssh-agent.pid"
-# SSH_AUTH_SOCK="$HOME/.config/ssh-agent.sock"
+## SSH-Agent
+# Define a persistent file path to store agent environment variables
+SSH_ENV="$HOME/.ssh/agent/agent-env"
+if [ ! -f $SSH_ENV ]; then
+   mkdir -p $HOME/.ssh/agent
+   touch $SSH_ENV
+fi
 
-# if [[ ! -f "$HOME/.config/ssh-agent.pid" ]]; then
-#     touch "$HOME/.config/ssh-agent.pid"
-# fi
-# if [[ ! -f "$HOME/.config/ssh-agent.sock" ]]; then
-#     touch "$HOME/.config/ssh-agent.sock"
-# fi
+function start_agent {
+    echo "Initializing new SSH agent..."
+    # Start ssh-agent and save environmental variables to the file
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    
+    # Locate and add all private keys from ~/.ssh
+    # Filters out public keys (*.pub), config files, and known_hosts
+    find "$HOME/.ssh" -type f ! -name "*.pub" ! -name "config" ! -name "authorized_keys" ! -name "known_hosts" ! -name "known_hosts.old" -exec ssh-add {} +
+}
 
-# if [ -z "$SSH_AGENT_PID" ]
-# then
-# 	# no PID exported, try to get it from pidfile
-# 	SSH_AGENT_PID=$(cat "$ssh_pid_file")
-# fi
-
-# if ! kill -0 $SSH_AGENT_PID &> /dev/null
-# then
-# 	# the agent is not running, start it
-# 	rm "$SSH_AUTH_SOCK" &> /dev/null
-# 	>&2 echo "Starting SSH agent, since it's not running; this can take a moment"
-# 	eval "$(ssh-agent -s -a "$SSH_AUTH_SOCK")"
-# 	echo "$SSH_AGENT_PID" > "$ssh_pid_file"
-# 	ssh-add "$HOME/.ssh/github" 2>/dev/null
-
-# 	>&2 echo "Started ssh-agent with '$SSH_AUTH_SOCK'"
-# else
-#  	>&2 echo "ssh-agent on '$SSH_AUTH_SOCK' ($SSH_AGENT_PID)"
-# fi
-
-# export SSH_AGENT_PID
-# export SSH_AUTH_SOCK
+# Source the environment file if it exists
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    # Verify if the agent process inside the file is still alive
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null || {
+        start_agent
+    }
+else
+    start_agent
+fi
 
