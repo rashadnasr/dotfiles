@@ -25,7 +25,8 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light Aloxaf/fzf-tab
-
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
 
 
 #######################################################
@@ -165,7 +166,7 @@ function start_agent {
     
     # Locate and add all private keys from ~/.ssh
     # Filters out public keys (*.pub), config files, and known_hosts
-    find "$HOME/.ssh" -type f ! -name "*.pub" ! -name "config" ! -name "authorized_keys" ! -name "known_hosts" ! -name "known_hosts.old" -exec ssh-add {} +
+    find "$HOME/.ssh" -type f ! -name "*.pub" ! -name "config" ! -name "authorized_keys" ! -name "known_hosts" ! -name "known_hosts.old" ! -name "agent-env" -exec ssh-add {} +
 }
 
 # Source the environment file if it exists
