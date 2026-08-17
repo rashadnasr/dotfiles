@@ -226,6 +226,10 @@ function proxy_off(){
 # Aliases
 #######################################################
 
+
+# to get completion with sudo
+alias sudo='sudo '
+
 # Alias's for archives
 alias mktar='tar -cvf'
 alias mkbz2='tar -cvjf'
@@ -372,3 +376,6 @@ alias music="ncmpcpp"
 # NVim instead of vim
 alias vim="nvim"
 alias v="nvim"
+
+# GooseVPN Relay launch
+alias goose="goose-client -config ~/Backup/AppBak/GooseRelayVPN-client/client_config.json"
