@@ -102,12 +102,14 @@ setopt complete_aliases
 #######################################################
 
 # History
+
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
-if [ ! -f $HISTSIZE ]; then
-   mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}/zsh
-   touch ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history
+if [ ! -f "$HISTFILE" ]; then
+   mkdir -p "$(dirname "$HISTFILE")"
+   touch "$HISTFILE"
 fi
+
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
